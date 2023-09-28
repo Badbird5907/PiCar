@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Image Stream</title>
+</head>
+<body>
+<img id="video" src="" alt="Video stream not available.">
+
+<script>
+    // Get a reference to the video element
+    const video = document.getElementById('video');
+
+    // Create a WebSocket connection
+    const socket = new WebSocket('ws://127.0.0.1:1337/ws');
+
+    // When the WebSocket connection is opened
+    socket.addEventListener('open', (event) => {
+        console.log('WebSocket connection opened.');
+    });
+
+    // When a message is received from the WebSocket server
+    socket.addEventListener('message', (event) => {
+        console.log('WebSocket message received:', event.data)
+        // Assuming the received data is a base64 encoded image
+        const base64Image = event.data;
+
+        // Set the base64 image as the source of the video element
+        video.src = `data:image/jpeg;base64,${base64Image}`;
+    });
+
+    // When an error occurs with the WebSocket connection
+    socket.addEventListener('error', (event) => {
+        console.error('WebSocket error:', event);
+    });
+
+    // When the WebSocket connection is closed
+    socket.addEventListener('close', (event) => {
+        console.log('WebSocket connection closed.');
+    });
+</script>
+</body>
+</html>
