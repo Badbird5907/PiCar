@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.sarxos:webcam-capture:0.3.12") // {
+    // implementation("com.github.sarxos:webcam-capture:0.3.12") // {
         // exclude bridj
         // exclude(group = "com.nativelibs4java", module = "bridj")
     // }
@@ -22,6 +22,8 @@ dependencies {
     // implementation(files("libs/bridj-0.8.0.jar"))
 
     // implementation("com.github.sarxos:webcam-capture-driver-raspberrypi:0.3.13-SNAPSHOT")
+
+    implementation("org.bytedeco:javacv-platform:1.5.5")
 
     implementation("io.javalin:javalin:5.6.1")
     implementation("org.slf4j:slf4j-simple:2.0.7")
