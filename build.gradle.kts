@@ -1,7 +1,8 @@
 plugins {
     java
     id("io.freefair.lombok") version "8.3"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.github.johnrengelman.shadow") version "7.1.0"
+    id("org.bytedeco.gradle-javacpp-platform") version "1.5.9"
 }
 
 group = "dev.badbird.picar"
@@ -24,6 +25,8 @@ dependencies {
     // implementation("com.github.sarxos:webcam-capture-driver-raspberrypi:0.3.13-SNAPSHOT")
 
     implementation("org.bytedeco:javacv-platform:1.5.5")
+    // implementation(group = "org.bytedeco", name = "javacv", version = "1.5.5", classifier = "windows-x86_64")
+
 
     implementation("io.javalin:javalin:5.6.1")
     implementation("org.slf4j:slf4j-simple:2.0.7")
