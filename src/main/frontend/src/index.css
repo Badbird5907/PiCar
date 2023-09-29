@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* index.css or your custom CSS file */
+body {
+    min-height: 100vh; /* Make sure the body covers the entire viewport height */
+    margin: 0; /* Remove default margin to ensure full coverage */
+    display: flex; /* Use flex to make sure the content stretches */
+    flex-direction: column; /* Stack child elements vertically */
+}
+
+main {
+    flex: 1; /* Make the main element grow and fill the available space */
+}
