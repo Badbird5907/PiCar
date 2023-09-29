@@ -1,4 +1,6 @@
 @echo off
+call build.bat a
+
 setlocal
 
 set LOCAL_FILE_PATH=build\libs\PiCar.jar
