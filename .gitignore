@@ -1,6 +1,11 @@
+src/main/frontend/node_modules
+src/main/frontend/.cache
+
+
 .idea
 .gradle
 build
 run
 libs
 *.jar
+*.log
