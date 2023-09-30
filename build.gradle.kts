@@ -22,6 +22,10 @@ dependencies {
     compileOnly("com.google.code.gson:gson:2.10.1")
     implementation("io.javalin:javalin:5.6.2")
     compileOnly("org.slf4j:slf4j-simple:2.0.9")
+    val pi4jVersion = "1.4"
+    compileOnly("com.pi4j:pi4j-core:$pi4jVersion")
+    // compileOnly("com.pi4j:pi4j-plugin-raspberrypi:$pi4jVersion")
+    // compileOnly("com.pi4j:pi4j-plugin-pigpio:$pi4jVersion")
 }
 
 val yarnInstall by tasks.creating(NpxTask::class) {
@@ -43,7 +47,7 @@ val devFrontend by tasks.creating(NpxTask::class) {
 tasks.shadowJar {
     archiveFileName.set("PiCar.jar")
     manifest {
-        attributes["Main-Class"] = "dev.badbird.picar.Main"
+        attributes["Main-Class"] = "dev.badbird.picar.PiCar"
     }
     dependsOn("buildReactApp")
 
