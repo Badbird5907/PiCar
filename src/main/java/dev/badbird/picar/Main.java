@@ -29,6 +29,10 @@ public class Main {
             String path = ctx.path().substring(1);
             if (path.isEmpty()) path = "index.html";
             Map.Entry<String, InputStream> file = resolveFile(path);
+            if (file == null) {
+                ctx.status(404);
+                return;
+            }
             ctx.contentType(file.getKey());
             ctx.result(file.getValue());
         });
@@ -37,7 +41,7 @@ public class Main {
     @SneakyThrows
     private static Map.Entry<String, InputStream> resolveFile(String path) {
         InputStream resource = Main.class.getResourceAsStream("/frontend/" + path);
-        if (resource == null && path.equals("index.html")) return null;
+        if (resource == null && path.equals("index.html")) return null; // avoid stack overflow
         if (resource == null) return resolveFile("index.html");
         return Map.entry(Files.probeContentType(Paths.get(path)), resource);
     }
