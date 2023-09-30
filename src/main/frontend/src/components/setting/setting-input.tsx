@@ -1,6 +1,7 @@
-import {Button, Card, CardBody, Input} from "@nextui-org/react";
+import {Card, CardBody, Input} from "@nextui-org/react";
 import {useEffect, useState} from "react";
 import {findSetting, getSettingValue, Setting} from "@/util/setting.ts";
+import CustomButton from "@/components/button.tsx";
 
 type SettingInputProps = {
     settingKey: string,
@@ -25,10 +26,11 @@ const SettingInput = (props: SettingInputProps) => {
                             console.log(value)
                             setValue(value);
                         }}/>
-                        <Button className={"mt-4"} onClick={() => {
+                        <CustomButton className={"mt-4"} onClickLoading={() => {
                             // localforage.setItem(props.settingKey, value);
                             localStorage.setItem(props.settingKey, value);
-                        }}>Save</Button>
+                            return Promise.resolve();
+                        }}>Save</CustomButton>
                     </>
                 )}
             </CardBody>

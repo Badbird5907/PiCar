@@ -1,8 +1,9 @@
 import {useEffect, useRef, useState} from "react";
 import {getSettingValue} from "@/util/setting.ts";
-import {Button, Card, CardBody, Spinner} from "@nextui-org/react";
+import {Card, CardBody, Spinner} from "@nextui-org/react";
 import {FaPause, FaPlay} from "react-icons/fa";
 import {FaArrowsRotate} from "react-icons/fa6";
+import CustomButton from "@/components/button.tsx";
 
 type LiveStreamProps = {
     refresh: () => void
@@ -87,7 +88,7 @@ const LiveStream = (props: LiveStreamProps) => {
                     id="video"
                     src=""
                     alt="Video stream not available."
-                    className={loading ? "opacity-0" : "z-20"}
+                    className={loading ? "opacity-0" : "z-20 rounded-2xl"}
                 />
                 {loading ? (
                     <div
@@ -102,7 +103,7 @@ const LiveStream = (props: LiveStreamProps) => {
                 )}
                 <div className={"flex justify-center mt-4"}>
                     {!stopped ?
-                        <Button
+                        <CustomButton
                             isIconOnly
                             color={"warning"}
                             aria-label={"Stop"}
@@ -113,8 +114,8 @@ const LiveStream = (props: LiveStreamProps) => {
                             }}
                         >
                             <FaPause/>
-                        </Button> :
-                        <Button
+                        </CustomButton> :
+                        <CustomButton
                             isIconOnly
                             color={"success"}
                             aria-label={"Unpause"}
@@ -125,9 +126,9 @@ const LiveStream = (props: LiveStreamProps) => {
                             }}
                         >
                             <FaPlay/>
-                        </Button>
+                        </CustomButton>
                     }
-                    <Button
+                    <CustomButton
                         isIconOnly
                         color={"secondary"}
                         aria-label={"Restart"}
@@ -138,7 +139,7 @@ const LiveStream = (props: LiveStreamProps) => {
                         }}
                     >
                         <FaArrowsRotate/>
-                    </Button>
+                    </CustomButton>
                 </div>
             </CardBody>
         </Card>

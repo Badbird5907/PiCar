@@ -30,7 +30,7 @@ public class WebSocketHandler implements Consumer<WsConfig> {
             while (true) {
                 //  System.out.println("Waiting for contexts");
                 try {
-                    Thread.sleep(1000 / 60); // 30 fps
+                    Thread.sleep(1000 / 60); // some arbitrary number i pulled out of my ass
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -46,7 +46,6 @@ public class WebSocketHandler implements Consumer<WsConfig> {
                     continue;
                     // throw new RuntimeException(e);
                 }
-                // System.out.println("Grabbed frame");
                 BufferedImage image = frameToBufferedImage(frame);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 try {
