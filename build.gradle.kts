@@ -29,7 +29,6 @@ val yarnInstall by tasks.creating(NpxTask::class) {
     command.set("yarn")
     args.set(listOf("install"))
 }
-// Define a task to build the React app
 val buildReactApp by tasks.creating(NpxTask::class) {
     workingDir.set(file("src/main/frontend"))
     command.set("yarn")
@@ -40,11 +39,7 @@ val devFrontend by tasks.creating(NpxTask::class) {
     command.set("yarn")
     args.set(listOf("run", "dev"))
 }
-val generateJavaCvJar by tasks.creating(Jar::class) {
 
-}
-
-// Make the JAR task depend on the React build task
 tasks.shadowJar {
     archiveFileName.set("PiCar.jar")
     manifest {
@@ -54,7 +49,7 @@ tasks.shadowJar {
 
     // Include the React build output in the JAR resources
     from("src/main/frontend/dist") {
-        into("frontend") // Adjust this path as needed
+        into("frontend")
     }
 }
 
