@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Index from './route'
 import './index.css'
@@ -19,13 +18,13 @@ const router = createBrowserRouter([
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
       <NextUIProvider>
           <body className={"min-h-screen bg-background font-sans antialiased"}>
-          <main className="dark text-foreground bg-background h-full">
+          <main className="dark text-foreground bg-background h-full pt-4">
               <RouterProvider router={router} />
           </main>
           </body>
       </NextUIProvider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )

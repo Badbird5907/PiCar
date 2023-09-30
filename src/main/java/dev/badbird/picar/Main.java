@@ -9,16 +9,21 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Main {
-    private static final ScheduledExecutorService executor = java.util.concurrent.Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService executor = java.util.concurrent.Executors.newScheduledThreadPool(5);
 
     @SneakyThrows
     public static void main(String[] args) {
         Javalin app = Javalin.create().start(1337);
-        app.ws("/api/ws", new WebSocketHandler(executor));
+        app.ws("/api/ws/stream", new WebSocketHandler(executor));
+        String data = Files.readAllLines(Paths.get("index.html")).stream().collect(Collectors.joining("\n"));
+        app.get("/old", ctx -> {
+            // give the client the index.html file
+            ctx.contentType("text/html");
+            ctx.result(data);
+        });
         // serve anything in frontend/* in the jar
         app.get("/*", ctx -> {
             String path = ctx.path().substring(1);
@@ -32,6 +37,7 @@ public class Main {
     @SneakyThrows
     private static Map.Entry<String, InputStream> resolveFile(String path) {
         InputStream resource = Main.class.getResourceAsStream("/frontend/" + path);
+        if (resource == null && path.equals("index.html")) return null;
         if (resource == null) return resolveFile("index.html");
         return Map.entry(Files.probeContentType(Paths.get(path)), resource);
     }

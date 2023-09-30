@@ -17,10 +17,11 @@ repositories {
 }
 
 dependencies {
-    implementation("org.bytedeco:javacv-platform:1.5.5")
-
-    implementation("io.javalin:javalin:5.6.1")
-    implementation("org.slf4j:slf4j-simple:2.0.7")
+    // libs are loaded at runtime from jar files on the server.
+    compileOnly("org.bytedeco:javacv-platform:1.5.5")
+    compileOnly("com.google.code.gson:gson:2.10.1")
+    implementation("io.javalin:javalin:5.6.2")
+    compileOnly("org.slf4j:slf4j-simple:2.0.9")
 }
 
 val yarnInstall by tasks.creating(NpxTask::class) {
@@ -38,6 +39,9 @@ val devFrontend by tasks.creating(NpxTask::class) {
     workingDir.set(file("src/main/frontend"))
     command.set("yarn")
     args.set(listOf("run", "dev"))
+}
+val generateJavaCvJar by tasks.creating(Jar::class) {
+
 }
 
 // Make the JAR task depend on the React build task

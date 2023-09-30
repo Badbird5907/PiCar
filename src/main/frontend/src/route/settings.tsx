@@ -6,7 +6,10 @@ const Settings = () => {
             <h1 className={
                 "text-4xl text-center text-foreground dark:text-foreground-dark font-bold"
             }>Settings</h1>
-            <SettingInput settingKey={"test"} defaultValue={"dummy"} label={"Test"}/>
+            <div className={"grid grid-cols-1 md:grid-cols-8"}>
+                <SettingInput settingKey={"apiUrl"} />
+                <SettingInput settingKey={"streamWs"} />
+            </div>
         </div>
     );
 };
