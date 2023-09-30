@@ -1,11 +1,12 @@
-import { useEffect, useState, useRef } from "react";
-import { getSettingValue } from "@/util/setting.ts";
-import { Button, Card, CardBody, Spinner } from "@nextui-org/react";
+import {useEffect, useRef, useState} from "react";
+import {getSettingValue} from "@/util/setting.ts";
+import {Button, Card, CardBody, Spinner} from "@nextui-org/react";
 import {FaPause, FaPlay} from "react-icons/fa";
 import {FaArrowsRotate} from "react-icons/fa6";
 
 type LiveStreamProps = {
     refresh: () => void
+    close: () => void
 }
 const LiveStream = (props: LiveStreamProps) => {
     const [loading, setLoading] = useState(true);
@@ -15,6 +16,9 @@ const LiveStream = (props: LiveStreamProps) => {
     const [stopped, setStopped] = useState(false);
 
     const setupWebSocket = () => {
+        if (stopped || window.streamClosed) {
+            return;
+        }
         const video = document.getElementById("video") as HTMLVideoElement;
 
         const webSocket = new WebSocket(getSettingValue("streamWs"));
@@ -26,6 +30,7 @@ const LiveStream = (props: LiveStreamProps) => {
             lastFrameTime.current = performance.now();
         });
         webSocket.addEventListener("message", (event) => {
+            if (!video || window.streamClosed) return;
             const base64Image = event.data;
             video.src = `data:image/jpeg;base64,${base64Image}`;
 
@@ -45,8 +50,11 @@ const LiveStream = (props: LiveStreamProps) => {
         });
         webSocket.addEventListener("close", (_) => {
             console.log("WebSocket connection closed.");
+            if (stopped || !video || window.streamClosed) {
+                return;
+            }
             setLoading(true);
-            setTimeout(function() {
+            setTimeout(function () {
                 console.log("Reconnecting...")
                 setupWebSocket();
             }, 1000);
@@ -57,24 +65,35 @@ const LiveStream = (props: LiveStreamProps) => {
     useEffect(() => {
         const webSocket = setupWebSocket();
         return () => {
-            webSocket.close();
+            webSocket?.close();
         };
     }, []);
 
     return (
         <Card className={"col-span-2 m-6 md:mr-3 sm:mb-3 h-fit"}>
             <CardBody>
+                <div className={
+                    "absolute top-0 right-0 mr-2 cursor-pointer text-gray-500"
+                } onClick={() => {
+                    setStopped(true);
+                    window.streamClosed = true;
+                    ws?.close();
+                    props.close();
+                }}>
+                    x
+                </div>
+
                 <img
                     id="video"
                     src=""
                     alt="Video stream not available."
-                    className={loading ? "opacity-0" : ""}
+                    className={loading ? "opacity-0" : "z-20"}
                 />
                 {loading ? (
                     <div
                         className={"absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mb-4"}
                     >
-                        {stopped ? <FaPause /> : <Spinner />}
+                        {stopped ? <FaPause/> : <Spinner/>}
                     </div>
                 ) : (
                     <div className="flex items-center justify-center mt-4">
@@ -93,7 +112,7 @@ const LiveStream = (props: LiveStreamProps) => {
                                 setStopped(true);
                             }}
                         >
-                            <FaPause />
+                            <FaPause/>
                         </Button> :
                         <Button
                             isIconOnly
@@ -105,7 +124,7 @@ const LiveStream = (props: LiveStreamProps) => {
                                 setStopped(false);
                             }}
                         >
-                            <FaPlay />
+                            <FaPlay/>
                         </Button>
                     }
                     <Button
@@ -118,7 +137,7 @@ const LiveStream = (props: LiveStreamProps) => {
                             props.refresh();
                         }}
                     >
-                        <FaArrowsRotate />
+                        <FaArrowsRotate/>
                     </Button>
                 </div>
             </CardBody>
