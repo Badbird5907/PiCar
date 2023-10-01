@@ -3,6 +3,7 @@ import {useState} from "react";
 import {Card, CardBody, Spinner} from "@nextui-org/react";
 import {FaCog} from "react-icons/fa";
 import CustomButton from "@/components/button.tsx";
+import Led from "@/components/test/led.tsx";
 
 function Index() {
     const [showLiveStream, setShowLiveStream] = useState(0) // 0 = true, 1 = loading, 2 = false
@@ -33,6 +34,7 @@ function Index() {
                             </CardBody>
                         </Card>
                 }
+                <Led/>
             </div>
         </div>
     )

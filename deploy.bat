@@ -32,7 +32,7 @@ for /f "tokens=1,2 delims=:" %%A in (%CREDENTIALS_FILE%) do (
 )
 
 rem the static ip address of the raspberry pi on the router we're going to be using
-set PI_HOST=192.168.0.69
+set PI_HOST=192.168.3.69
 
 rem pscp -pw %PI_PASSWORD% "%LOCAL_FILE_PATH%" "%PI_USERNAME%@%PI_HOST%:/home/pi/"
 

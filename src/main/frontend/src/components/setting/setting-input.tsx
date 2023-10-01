@@ -5,6 +5,7 @@ import CustomButton from "@/components/button.tsx";
 
 type SettingInputProps = {
     settingKey: string,
+    rerender?: number
 }
 const SettingInput = (props: SettingInputProps) => {
     const [setting, setSetting] = useState<Setting | undefined>(undefined)
@@ -15,7 +16,7 @@ const SettingInput = (props: SettingInputProps) => {
         if (foundSetting) {
             setValue(getSettingValue(foundSetting.key))
         }
-    }, []);
+    }, [props.rerender]);
     return (
         <Card className={"col-span-2 m-6 md:mr-3 sm:mb-3 h-fit"}>
             <CardBody>

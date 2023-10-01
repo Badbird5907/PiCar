@@ -7,12 +7,12 @@ export const settings: Setting[] = [
     {
         label: "API URL",
         key: "apiUrl",
-        defaultValue: "http://192.168.0.69:1337/",
+        defaultValue: "http://192.168.3.69:1337/",
     },
     {
         label: "Stream WS",
         key: "streamWs",
-        defaultValue: "ws://192.168.0.69:1337/api/ws/stream",
+        defaultValue: "ws://192.168.3.69:1337/api/ws/stream",
     }
 ]
 

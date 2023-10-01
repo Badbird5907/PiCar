@@ -16,8 +16,11 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 
+import static org.bytedeco.ffmpeg.global.avutil.AV_LOG_PANIC;
+import static org.bytedeco.ffmpeg.global.avutil.av_log_set_level;
+
 public class WebSocketHandler implements Consumer<WsConfig> {
-    private final FrameGrabber grabber = new OpenCVFrameGrabber(0);
+    private final FrameGrabber grabber;
     private final List<WsContext> contexts = new ArrayList<>();
     private final ScheduledExecutorService executor;
     private static final Java2DFrameConverter paintConverter = new Java2DFrameConverter();
@@ -25,6 +28,8 @@ public class WebSocketHandler implements Consumer<WsConfig> {
     @SneakyThrows
     public WebSocketHandler(ScheduledExecutorService executor) {
         this.executor = executor;
+        av_log_set_level(AV_LOG_PANIC); // disable constant spam
+        grabber = new OpenCVFrameGrabber(0);
         grabber.start();
         new Thread(() -> {
             while (true) {

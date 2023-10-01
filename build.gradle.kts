@@ -22,7 +22,7 @@ dependencies {
     compileOnly("com.google.code.gson:gson:2.10.1")
     implementation("io.javalin:javalin:5.6.2")
     compileOnly("org.slf4j:slf4j-simple:2.0.9")
-    val pi4jVersion = "1.4"
+    val pi4jVersion = "1.4" // we're using v1 because v2 doesnt work on this pi for some reason
     compileOnly("com.pi4j:pi4j-core:$pi4jVersion")
     // compileOnly("com.pi4j:pi4j-plugin-raspberrypi:$pi4jVersion")
     // compileOnly("com.pi4j:pi4j-plugin-pigpio:$pi4jVersion")

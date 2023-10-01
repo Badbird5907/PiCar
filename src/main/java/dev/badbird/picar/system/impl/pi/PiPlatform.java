@@ -11,7 +11,7 @@ public class PiPlatform implements IPlatform {
     @Override
     public void init() {
         controller = GpioFactory.getInstance();
-        led = controller.provisionDigitalOutputPin(RaspiPin.GPIO_15, "LED", PinState.LOW);
+        led = controller.provisionDigitalOutputPin(BCM.GPIO_08, "LED", PinState.LOW);
     }
 
     @Override

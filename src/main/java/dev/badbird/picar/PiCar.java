@@ -10,6 +10,7 @@ import dev.badbird.picar.object.Configuration;
 import dev.badbird.picar.system.Platform;
 import io.javalin.Javalin;
 import io.javalin.http.Handler;
+import io.javalin.plugin.bundled.CorsPluginConfig;
 import lombok.Data;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -30,7 +31,7 @@ public class PiCar {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void main(String[] args) {
-        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "INFO");
+        // System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "INFO");
         instance.init();
     }
 
@@ -48,7 +49,11 @@ public class PiCar {
         logger.info("Initializing platform...");
         Platform.getPlatform().init();
         logger.info("Starting server on port {}", configuration.getPort());
-        Javalin app = Javalin.create().start(configuration.getPort());
+        Javalin app = Javalin.create(javalinConfig -> {
+            javalinConfig.plugins.enableCors(cors -> {
+                cors.add(CorsPluginConfig::anyHost);
+            });
+        }).start(configuration.getPort());
         Handler[] routes = {
                 new FrontendHandler()
         };
