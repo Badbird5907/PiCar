@@ -2,6 +2,7 @@ import {Card, CardBody} from "@nextui-org/react";
 import useSWR from "swr";
 import CustomButton from "@/components/button.tsx";
 import axios from "axios";
+import {getSettingValue} from "@/util/setting.ts";
 
 const Led = () => {
     const { data, mutate, error, isLoading } = useSWR("/api/led/")
@@ -11,7 +12,8 @@ const Led = () => {
                 {isLoading ? "Loading..." : data.state ? "LED is on" : "LED is off"}
                 {error && "Error!"}
                 <CustomButton onClickLoading={async () => {
-                    await axios.post("http://192.168.3.69:1337/api/led/toggle").then(_ => {
+                    const backend = getSettingValue("apiUrl");
+                    await axios.post(`${backend}/api/led/toggle`).then(_ => {
                         mutate();
                     });
                 }}>Toggle</CustomButton>
