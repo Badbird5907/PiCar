@@ -6,8 +6,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Settings from "./route/settings";
 import {DynamicModalProvider} from "@/components/dynamic-modal.tsx";
 import {SWRConfig} from "swr";
-import {getSettingValue} from "@/util/setting.ts";
-import axios from "axios";
+import apiClient from "@/util/api-client.ts";
 
 const router = createBrowserRouter([
     {
@@ -26,16 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <NextUIProvider>
         <SWRConfig value={{
             fetcher: (path) => {
-                let backend = getSettingValue("apiUrl");
-                // concat backend and path, but remove duplicate slashes
-                if (backend.endsWith("/")) {
-                    backend = backend.slice(0, -1);
-                }
-                if (path.startsWith("/")) {
-                    path = path.slice(1);
-                }
-                const url = backend + "/" + path;
-                return axios.get(url).then(res => res.data);
+                return apiClient.get(path).then(res => res.data);
             }
         }}>
             <body className={"min-h-screen bg-background font-sans antialiased"}>

@@ -23,7 +23,7 @@ public class PiPlatform implements IPlatform {
     public void init() {
         controller = GpioFactory.getInstance();
         led = controller.provisionDigitalOutputPin(BCM.GPIO_08, "LED", PinState.LOW);
-        motorController = new L298nMotorController();
+        motorController = new L298nMotorController(this);
     }
 
     @Override

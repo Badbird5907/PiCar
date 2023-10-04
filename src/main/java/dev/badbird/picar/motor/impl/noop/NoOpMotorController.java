@@ -2,16 +2,25 @@ package dev.badbird.picar.motor.impl.noop;
 
 import dev.badbird.picar.motor.IMotorController;
 import dev.badbird.picar.motor.MotorSide;
+import dev.badbird.picar.system.IPlatform;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public class NoOpMotorController implements IMotorController<NoOpMotor> {
     private double speed = 200;
     @Getter
     private Map<MotorSide, NoOpMotor> motors;
+    private final IPlatform platform;
+
+    @Override
+    public IPlatform getPlatform() {
+        return platform;
+    }
 
     @Override
     public void init() {

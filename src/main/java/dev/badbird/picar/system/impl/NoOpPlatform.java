@@ -9,7 +9,7 @@ public class NoOpPlatform implements IPlatform {
     private IMotorController motorController;
     @Override
     public void init() {
-        motorController = new NoOpMotorController();
+        motorController = new NoOpMotorController(this);
 
     }
 

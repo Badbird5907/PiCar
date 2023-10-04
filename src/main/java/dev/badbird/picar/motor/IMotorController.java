@@ -1,6 +1,7 @@
 package dev.badbird.picar.motor;
 
 import dev.badbird.picar.object.MotorMovementState;
+import dev.badbird.picar.system.IPlatform;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface IMotorController<T extends IMotor> {
+    IPlatform getPlatform();
     void init();
 
     void cleanup();

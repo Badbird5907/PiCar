@@ -11,22 +11,29 @@ import dev.badbird.picar.system.Platform;
 import dev.badbird.picar.system.impl.pi.BCM;
 import dev.badbird.picar.system.impl.pi.PiPlatform;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 @Getter
+@RequiredArgsConstructor
 public class L298nMotorController implements IMotorController<L298nMotor> {
     private GpioController controller;
     private GpioPinAnalogOutput ena;
     private GpioPinDigitalOutput in1, in2, in3, in4;
     private Map<MotorSide, L298nMotor> motors;
 
+    private final IPlatform platform;
+
+    @Override
+    public IPlatform getPlatform() {
+        return platform;
+    }
 
     @Override
     public void init() {
-        IPlatform platform = Platform.getPlatform();
         if (platform instanceof PiPlatform pi) {
             controller = pi.getController();
             in1 = controller.provisionDigitalOutputPin(BCM.GPIO_03, "IN1");

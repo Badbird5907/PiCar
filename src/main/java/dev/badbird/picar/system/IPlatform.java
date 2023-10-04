@@ -7,5 +7,5 @@ public interface IPlatform {
     void cleanup();
     void setLedState(boolean state);
     boolean getLedState();
-    IMotorController getMotorController();
+    IMotorController<?> getMotorController();
 }
