@@ -7,7 +7,6 @@ import dev.badbird.picar.ws.WSPacket;
 import dev.badbird.picar.ws.WebSocketPacket;
 import lombok.AllArgsConstructor;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @AllArgsConstructor

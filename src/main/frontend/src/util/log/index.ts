@@ -1,7 +1,7 @@
 /* eslint-disable */
 // @ts-nocheck
-import Logger from "@util/log/logger";
-import Node from "@util/log/node";
+import Logger from "@/util/log/logger";
+import Node from "@/util/log/node";
 
 function getLogger(): Logger {
   /*

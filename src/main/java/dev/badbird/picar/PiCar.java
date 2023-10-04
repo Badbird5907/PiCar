@@ -6,6 +6,7 @@ import dev.badbird.picar.handler.*;
 import dev.badbird.picar.handler.ws.WSHandler;
 import dev.badbird.picar.handler.ws.StreamWSHandler;
 import dev.badbird.picar.object.Configuration;
+import dev.badbird.picar.object.HeartbeatThread;
 import dev.badbird.picar.system.Platform;
 import dev.badbird.picar.ws.WSPacketRegistry;
 import io.javalin.Javalin;
@@ -79,5 +80,7 @@ public class PiCar {
             if (annotation == null) continue;
             app.addHandler(annotation.type(), annotation.value(), route);
         }
+
+        new HeartbeatThread().start();
     }
 }

@@ -4,6 +4,7 @@ import {Card, CardBody, Spinner} from "@nextui-org/react";
 import {FaCog} from "react-icons/fa";
 import CustomButton from "@/components/button.tsx";
 import Led from "@/components/test/led.tsx";
+import ErrorBoundary from "@/components/error-boundary";
 
 function Index() {
     const [showLiveStream, setShowLiveStream] = useState(0) // 0 = true, 1 = loading, 2 = false
@@ -14,27 +15,31 @@ function Index() {
             }>PiCar</h1>
             <a href={"/settings"}>
                 <CustomButton isIconOnly variant={"faded"} className={"right-0 top-0 absolute mr-2 mt-2"}>
-                    <FaCog />
+                    <FaCog/>
                 </CustomButton>
             </a>
             <div className={"grid grid-cols-1 md:grid-cols-8"}>
                 {showLiveStream == 0 ?
                     // TODO some kind of component to wrap all of these neatly
                     // works fine for now though
-                    <LiveStream refresh={() => {
-                        setShowLiveStream(1)
-                        setTimeout(() => {
-                            setShowLiveStream(0)
-                        }, 250)
-                    }} close={() => setShowLiveStream(2)} /> :
+                    <ErrorBoundary>
+                        <LiveStream refresh={() => {
+                            setShowLiveStream(1)
+                            setTimeout(() => {
+                                setShowLiveStream(0)
+                            }, 250)
+                        }} close={() => setShowLiveStream(2)}/>
+                    </ErrorBoundary> :
                     showLiveStream == 1 &&
-                        <Card>
-                            <CardBody>
-                                <Spinner />
-                            </CardBody>
-                        </Card>
+                    <Card>
+                        <CardBody>
+                            <Spinner/>
+                        </CardBody>
+                    </Card>
                 }
-                <Led/>
+                <ErrorBoundary>
+                    <Led/>
+                </ErrorBoundary>
             </div>
         </div>
     )
