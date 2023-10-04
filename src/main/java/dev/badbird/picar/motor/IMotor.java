@@ -1,5 +1,7 @@
 package dev.badbird.picar.motor;
 
+import dev.badbird.picar.object.MotorState;
+
 public interface IMotor {
     void forward();
 
@@ -8,4 +10,6 @@ public interface IMotor {
     void stop();
 
     MotorSide getSide();
+
+    MotorState getState();
 }

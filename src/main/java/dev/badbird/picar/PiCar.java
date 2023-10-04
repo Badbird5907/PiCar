@@ -2,12 +2,12 @@ package dev.badbird.picar;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.badbird.picar.handler.APIRoute;
-import dev.badbird.picar.handler.FrontendHandler;
-import dev.badbird.picar.handler.LedHandler;
-import dev.badbird.picar.handler.WebSocketHandler;
+import dev.badbird.picar.handler.*;
+import dev.badbird.picar.handler.ws.WSHandler;
+import dev.badbird.picar.handler.ws.StreamWSHandler;
 import dev.badbird.picar.object.Configuration;
 import dev.badbird.picar.system.Platform;
+import dev.badbird.picar.ws.WSPacketRegistry;
 import io.javalin.Javalin;
 import io.javalin.http.Handler;
 import io.javalin.plugin.bundled.CorsPluginConfig;
@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -37,6 +36,7 @@ public class PiCar {
     }
 
     private Configuration configuration;
+    private WSPacketRegistry packetRegistry;
 
     @SneakyThrows
     public void init() {
@@ -70,7 +70,10 @@ public class PiCar {
                 new FrontendHandler()
         };
         LedHandler.init(app);
-        app.ws("/api/ws/stream", new WebSocketHandler(executor));
+        app.ws("/api/ws/stream", new StreamWSHandler(executor));
+        packetRegistry = new WSPacketRegistry(executor);
+        packetRegistry.init();
+        app.ws("/api/ws/", new WSHandler());
         for (Handler route : routes) {
             APIRoute annotation = route.getClass().getAnnotation(APIRoute.class);
             if (annotation == null) continue;

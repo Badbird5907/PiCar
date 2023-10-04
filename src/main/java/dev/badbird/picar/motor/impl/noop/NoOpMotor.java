@@ -2,27 +2,43 @@ package dev.badbird.picar.motor.impl.noop;
 
 import dev.badbird.picar.motor.IMotor;
 import dev.badbird.picar.motor.MotorSide;
+import dev.badbird.picar.object.MotorMovementState;
+import dev.badbird.picar.object.MotorState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class NoOpMotor implements IMotor {
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(NoOpMotor.class);
     @Getter
-    private MotorSide side;
+    private final MotorSide side;
+    private MotorMovementState state = MotorMovementState.STOPPED;
+
     @Override
     public void forward() {
         LOGGER.info("{} Forward", side.name());
+        state = MotorMovementState.FORWARD;
     }
 
     @Override
     public void backward() {
         LOGGER.info("{} Backward", side.name());
+        state = MotorMovementState.BACKWARD;
     }
 
     @Override
     public void stop() {
         LOGGER.info("{} Stop", side.name());
+        state = MotorMovementState.STOPPED;
+    }
+
+    @Override
+    public MotorState getState() {
+        return new MotorState(
+                side,
+                state
+        );
     }
 }

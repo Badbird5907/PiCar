@@ -1,5 +1,8 @@
 package dev.badbird.picar.motor;
 
+import dev.badbird.picar.object.MotorMovementState;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,6 +52,12 @@ public interface IMotorController<T extends IMotor> {
 
     default void setSpeed(double speed) {
         speed(getSpeed());
+    }
+
+    default Map<MotorSide, MotorMovementState> getMovementStates() {
+        Map<MotorSide, MotorMovementState> map = new HashMap<>();
+        getMotors().forEach((side, motor) -> map.put(side, motor.getState().getMovementState()));
+        return map;
     }
 }
 

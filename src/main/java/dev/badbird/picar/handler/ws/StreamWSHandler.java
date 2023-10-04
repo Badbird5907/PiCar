@@ -1,8 +1,7 @@
-package dev.badbird.picar.handler;
+package dev.badbird.picar.handler.ws;
 
 import io.javalin.websocket.WsConfig;
 import io.javalin.websocket.WsContext;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.bytedeco.javacv.*;
 
@@ -19,14 +18,14 @@ import java.util.function.Consumer;
 import static org.bytedeco.ffmpeg.global.avutil.AV_LOG_PANIC;
 import static org.bytedeco.ffmpeg.global.avutil.av_log_set_level;
 
-public class WebSocketHandler implements Consumer<WsConfig> {
+public class StreamWSHandler implements Consumer<WsConfig> {
     private final FrameGrabber grabber;
     private final List<WsContext> contexts = new ArrayList<>();
     private final ScheduledExecutorService executor;
     private static final Java2DFrameConverter paintConverter = new Java2DFrameConverter();
 
     @SneakyThrows
-    public WebSocketHandler(ScheduledExecutorService executor) {
+    public StreamWSHandler(ScheduledExecutorService executor) {
         this.executor = executor;
         av_log_set_level(AV_LOG_PANIC); // disable constant spam
         grabber = new OpenCVFrameGrabber(0);
