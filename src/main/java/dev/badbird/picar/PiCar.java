@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -48,6 +49,17 @@ public class PiCar {
         }
         logger.info("Initializing platform...");
         Platform.getPlatform().init();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                Platform.getPlatform().cleanup();
+                Platform.getPlatform().getMotorController().cleanup();
+            }
+        });
+        logger.info("Platform initialized!");
+        logger.info("Initializing motors...");
+        Platform.getPlatform().getMotorController().init();
+        logger.info("Motors initialized!");
         logger.info("Starting server on port {}", configuration.getPort());
         Javalin app = Javalin.create(javalinConfig -> {
             javalinConfig.plugins.enableCors(cors -> {

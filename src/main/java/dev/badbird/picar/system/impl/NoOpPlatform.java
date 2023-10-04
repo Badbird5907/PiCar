@@ -1,12 +1,20 @@
 package dev.badbird.picar.system.impl;
 
+import dev.badbird.picar.motor.IMotorController;
+import dev.badbird.picar.motor.impl.noop.NoOpMotorController;
 import dev.badbird.picar.system.IPlatform;
 
 public class NoOpPlatform implements IPlatform {
     private boolean ledState = false;
-
+    private IMotorController motorController;
     @Override
     public void init() {
+        motorController = new NoOpMotorController();
+
+    }
+
+    @Override
+    public void cleanup() {
 
     }
 
@@ -19,5 +27,10 @@ public class NoOpPlatform implements IPlatform {
     @Override
     public boolean getLedState() {
         return ledState;
+    }
+
+    @Override
+    public IMotorController getMotorController() {
+        return motorController;
     }
 }

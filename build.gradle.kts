@@ -37,6 +37,7 @@ val buildReactApp by tasks.creating(NpxTask::class) {
     workingDir.set(file("src/main/frontend"))
     command.set("yarn")
     args.set(listOf("run", "build"))
+    dependsOn(yarnInstall)
 }
 val devFrontend by tasks.creating(NpxTask::class) {
     workingDir.set(file("src/main/frontend"))
