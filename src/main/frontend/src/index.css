@@ -2,14 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-/* index.css or your custom CSS file */
 body {
-    min-height: 100vh; /* Make sure the body covers the entire viewport height */
-    margin: 0; /* Remove default margin to ensure full coverage */
-    display: flex; /* Use flex to make sure the content stretches */
-    flex-direction: column; /* Stack child elements vertically */
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 main {
-    flex: 1; /* Make the main element grow and fill the available space */
+    flex: 1;
+}
+
+@keyframes rotate-forward {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate-backward {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+.animate-rotate-forward {
+    animation: rotate-forward 2s linear infinite;
+}
+
+.animate-rotate-backward {
+    animation: rotate-backward 2s linear infinite;
 }

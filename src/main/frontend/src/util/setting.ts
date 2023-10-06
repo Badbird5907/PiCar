@@ -13,6 +13,11 @@ export const settings: Setting[] = [
         label: "Stream WS",
         key: "streamWs",
         defaultValue: "ws://192.168.3.69:1337/api/ws/stream",
+    },
+    {
+        label: "Websocket URL",
+        key: "websocketUrl",
+        defaultValue: "ws://192.168.3.69:1337/ws",
     }
 ]
 

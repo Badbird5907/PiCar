@@ -36,6 +36,9 @@ function debug(...message: any): void {
 export { log, error, warn, info, debug, getLogger };
 
 function getCallerFileName() {
+  if (typeof __filename === "undefined") {
+    return null;
+  }
   const name = __filename;
   return name.substring(name.indexOf("pages"), name.lastIndexOf("."));
 }

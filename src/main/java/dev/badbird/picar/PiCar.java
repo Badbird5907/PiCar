@@ -59,8 +59,7 @@ public class PiCar {
         });
         logger.info("Platform initialized!");
         logger.info("Initializing motors...");
-        Platform.getPlatform().getMotorController().getPlatform().getMotorController().getPlatform().getMotorController().getPlatform().getMotorController().getPlatform().getMotorController().getPlatform().getMotorController()
-                .getPlatform().getMotorController().getPlatform().getMotorController().getPlatform().getMotorController().getPlatform().getMotorController().getPlatform().getMotorController().init();
+        Platform.getPlatform().getMotorController().init();
         logger.info("Motors initialized!");
         logger.info("Starting server on port {}", configuration.getPort());
         Javalin app = Javalin.create(javalinConfig -> {

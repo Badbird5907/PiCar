@@ -4,6 +4,7 @@ import {Card, CardBody, Spinner} from "@nextui-org/react";
 import {FaPause, FaPlay} from "react-icons/fa";
 import {FaArrowsRotate} from "react-icons/fa6";
 import CustomButton from "@/components/button.tsx";
+import {error, info} from "@/util/log";
 
 type LiveStreamProps = {
     refresh: () => void
@@ -24,9 +25,9 @@ const LiveStream = (props: LiveStreamProps) => {
 
         const webSocket = new WebSocket(getSettingValue("streamWs"));
         setWs(webSocket);
-        console.log("Connecting to WebSocket...");
+        info("[VIDEO] Connecting to WebSocket...");
         webSocket.addEventListener("open", (_) => {
-            console.log("WebSocket connection opened.");
+            info("[VIDEO] WebSocket connection opened.");
             setLoading(false);
             lastFrameTime.current = performance.now();
         });
@@ -47,16 +48,16 @@ const LiveStream = (props: LiveStreamProps) => {
             }
         });
         webSocket.addEventListener("error", (event) => {
-            console.error("WebSocket error:", event);
+            error("[VIDEO] WebSocket error:", event);
         });
         webSocket.addEventListener("close", (_) => {
-            console.log("WebSocket connection closed.");
+            info("[VIDEO] WebSocket connection closed.");
             if (stopped || !video || window.streamClosed) {
                 return;
             }
             setLoading(true);
             setTimeout(function () {
-                console.log("Reconnecting...")
+                info("[VIDEO] Reconnecting...")
                 setupWebSocket();
             }, 1000);
         });

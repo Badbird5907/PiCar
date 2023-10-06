@@ -22,11 +22,13 @@ const Settings = () => {
                         <CustomButton onClickLoading={async () => {
                             localStorage.setItem("apiUrl", "http://localhost:1337/");
                             localStorage.setItem("streamWs", "ws://localhost:1337/api/ws/stream");
+                            localStorage.setItem("websocketUrl", "ws://localhost:1337/api/ws");
                             setDummy(dummy + 1)
                         }}>Use Localhost</CustomButton>
                         <CustomButton className={"mt-4"} onClickLoading={async () => {
                             localStorage.setItem("apiUrl", "http://192.168.3.69:1337/");
                             localStorage.setItem("streamWs", "ws://192.168.3.69:1337/api/ws/stream");
+                            localStorage.setItem("websocketUrl", "ws://192.168.3.69:1337/api/ws");
                             setDummy(dummy + 1)
                         }}>Use Pi</CustomButton>
                         <div className={"w-full mt-4"}>
@@ -51,10 +53,22 @@ const Settings = () => {
                                 setDummy(dummy + 1)
                             }}>localhost</CustomButton>
                         </div>
+                        <div className={"w-full mt-4"}>
+                            <span>Websocket: </span>
+                            <CustomButton className={"ml-4 mr-2 w-fit"} onClickLoading={async () => {
+                                localStorage.setItem("websocketUrl", "ws://192.168.3.69:1337/api/ws");
+                                setDummy(dummy + 1)
+                            }}>Pi</CustomButton>
+                            <CustomButton className={"w-fit"} onClickLoading={async () => {
+                                localStorage.setItem("websocketUrl", "ws://localhost:1337/api/ws");
+                                setDummy(dummy + 1)
+                            }}>localhost</CustomButton>
+                        </div>
                     </CardBody>
                 </Card>
                 <SettingInput rerender={dummy} settingKey={"apiUrl"}/>
                 <SettingInput rerender={dummy} settingKey={"streamWs"}/>
+                <SettingInput rerender={dummy} settingKey={"websocketUrl"}/>
             </div>
         </div>
     );
