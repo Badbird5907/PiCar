@@ -3,12 +3,10 @@ import {useEffect, useState} from "react";
 import {Card, CardBody, Spinner} from "@nextui-org/react";
 import {FaCog} from "react-icons/fa";
 import CustomButton from "@/components/button.tsx";
-import Led from "@/components/test/led.tsx";
 import ErrorBoundary from "@/components/error-boundary";
 import WebsocketHandler from "@/util/websocket-handler.ts";
 import MotorStatus from "@/components/motor/motor-status.tsx";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import MotorControl from "@/components/motor/motor-control.tsx";
 
 function Index() {
     const [showLiveStream, setShowLiveStream] = useState(0) // 0 = true, 1 = loading, 2 = false
@@ -22,7 +20,6 @@ function Index() {
 
     return (
         <div>
-            <MotorControl ws={ws} />
             <h1 className={
                 "text-4xl text-center text-foreground dark:text-foreground-dark font-bold"
             }>PiCar</h1>
@@ -50,9 +47,6 @@ function Index() {
                         </CardBody>
                     </Card>
                 }
-                <ErrorBoundary>
-                    <Led/>
-                </ErrorBoundary>
                 <MotorStatus ws={ws} />
             </div>
         </div>

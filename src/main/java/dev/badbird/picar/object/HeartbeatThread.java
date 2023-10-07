@@ -1,6 +1,6 @@
 package dev.badbird.picar.object;
 
-import dev.badbird.picar.PiCar;
+import dev.badbird.picar.motor.IMotorController;
 import dev.badbird.picar.system.Platform;
 import dev.badbird.picar.ws.clientbound.ClientboundHeartbeatWSPacket;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +15,11 @@ public class HeartbeatThread extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            log.info("Sending heartbeat");
+            IMotorController<?> mc = Platform.getPlatform().getMotorController();
             ClientboundHeartbeatWSPacket packet = new ClientboundHeartbeatWSPacket(
                     System.currentTimeMillis(),
-                    Platform.getPlatform().getMotorController().getMovementStates()
+                    mc.getMovementStates(),
+                    mc.getDirection()
             );
             packet.send();
         }

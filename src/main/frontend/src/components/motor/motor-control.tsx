@@ -25,16 +25,16 @@ const MotorControl = (props: MotorControlProps) => {
             if ("wasd".includes(e.key)) {
                 e.preventDefault()
                 setDown(e.key)
-                console.log("kd", e.key, downRef.current)
+                // console.log("kd", e.key, downRef.current)
             }
         }
         const kuListener = (e: KeyboardEvent) => {
             if (!shouldRecord(e)) return;
             if ("wasd".includes(e.key)) {
                 e.preventDefault()
-                console.log("Key: ",e.key,"Expected: ",downRef.current)
+                // console.log("Key: ",e.key,"Expected: ",downRef.current)
                 if (e.key === downRef.current) {
-                    console.log("ku", e.key)
+                    // console.log("ku", e.key)
                     setDown("")
                 }
             }
@@ -50,7 +50,7 @@ const MotorControl = (props: MotorControlProps) => {
     useEffect(() => {
         if (!props.ws) return;
         const state = _down ? _down : "stop";
-        console.log("sending", state)
+        // console.log("sending", state)
         props.ws.send(JSON.stringify({
             name: "motor",
             data: {

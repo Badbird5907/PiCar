@@ -50,13 +50,10 @@ public class PiCar {
         }
         logger.info("Initializing platform...");
         Platform.getPlatform().init();
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                Platform.getPlatform().cleanup();
-                Platform.getPlatform().getMotorController().cleanup();
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            Platform.getPlatform().cleanup();
+            Platform.getPlatform().getMotorController().cleanup();
+        }));
         logger.info("Platform initialized!");
         logger.info("Initializing motors...");
         Platform.getPlatform().getMotorController().init();
@@ -70,7 +67,6 @@ public class PiCar {
         Handler[] routes = {
                 new FrontendHandler()
         };
-        LedHandler.init(app);
         app.ws("/api/ws/stream", new StreamWSHandler(executor));
         packetRegistry = new WSPacketRegistry(executor);
         packetRegistry.init();
