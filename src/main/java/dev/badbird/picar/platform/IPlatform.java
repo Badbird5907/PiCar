@@ -1,11 +1,9 @@
-package dev.badbird.picar.system;
+package dev.badbird.picar.platform;
 
 import dev.badbird.picar.motor.IMotorController;
 
 public interface IPlatform {
     void init();
     void cleanup();
-    void setLedState(boolean state);
-    boolean getLedState();
     IMotorController<?> getMotorController();
 }

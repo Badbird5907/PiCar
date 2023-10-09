@@ -2,7 +2,7 @@ package dev.badbird.picar.motor.impl.noop;
 
 import dev.badbird.picar.motor.IMotorController;
 import dev.badbird.picar.motor.MotorSide;
-import dev.badbird.picar.system.IPlatform;
+import dev.badbird.picar.platform.IPlatform;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

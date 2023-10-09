@@ -1,4 +1,4 @@
-package dev.badbird.picar.system.impl.pi;
+package dev.badbird.picar.platform.impl.pi;
 
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;

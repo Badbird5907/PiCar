@@ -24,7 +24,6 @@ const SettingInput = (props: SettingInputProps) => {
                     <>
                         <Input value={value} label={setting.label} onChange={(e) => {
                             const value = e.target.value;
-                            console.log(value)
                             setValue(value);
                         }}/>
                         <CustomButton className={"mt-4"} onClickLoading={() => {

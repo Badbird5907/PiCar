@@ -23,7 +23,6 @@ const MotorStatus = (props: MotorStatusProps) => {
     }
     const getIcon = () => {
         const movementDirection = directionRef.current;
-        console.log(movementDirection);
         if (movementDirection === MovementDirection.LEFT) {
             return <FaArrowLeft className={"text-green-500"} />;
         } else if (movementDirection === MovementDirection.RIGHT) {

@@ -18,9 +18,9 @@ if "%1"=="arm" (
 if "%2"=="--generate-java-cv" (
     echo Generating JavaCV jar file
     cd JavaCvGenerate
-    call gradlew.bat -PjavacppPlatform=%platform% build
+    call gradlew.bat -PjavacppPlatform=%platform% clean build
     echo Result is in: JavaCvGenerate/build/libs
 ) else (
     echo Building for %platform%
-    call gradlew.bat -PjavacppPlatform=%platform% build
+    call gradlew.bat -PjavacppPlatform=%platform% clean build
 )

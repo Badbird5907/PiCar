@@ -1,8 +1,8 @@
-package dev.badbird.picar.system.impl;
+package dev.badbird.picar.platform.impl;
 
 import dev.badbird.picar.motor.IMotorController;
 import dev.badbird.picar.motor.impl.noop.NoOpMotorController;
-import dev.badbird.picar.system.IPlatform;
+import dev.badbird.picar.platform.IPlatform;
 
 public class NoOpPlatform implements IPlatform {
     private boolean ledState = false;
@@ -16,17 +16,6 @@ public class NoOpPlatform implements IPlatform {
     @Override
     public void cleanup() {
 
-    }
-
-    @Override
-    public void setLedState(boolean state) {
-        System.out.println("LED state set to " + state);
-        ledState = state;
-    }
-
-    @Override
-    public boolean getLedState() {
-        return ledState;
     }
 
     @Override

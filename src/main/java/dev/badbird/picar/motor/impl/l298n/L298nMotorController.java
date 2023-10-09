@@ -1,15 +1,11 @@
 package dev.badbird.picar.motor.impl.l298n;
 
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioPinAnalogOutput;
-import com.pi4j.io.gpio.GpioPinDigitalOutput;
-import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.*;
 import dev.badbird.picar.motor.IMotorController;
 import dev.badbird.picar.motor.MotorSide;
-import dev.badbird.picar.system.IPlatform;
-import dev.badbird.picar.system.Platform;
-import dev.badbird.picar.system.impl.pi.BCM;
-import dev.badbird.picar.system.impl.pi.PiPlatform;
+import dev.badbird.picar.platform.IPlatform;
+import dev.badbird.picar.platform.impl.pi.BCM;
+import dev.badbird.picar.platform.impl.pi.PiPlatform;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -21,8 +17,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class L298nMotorController implements IMotorController<L298nMotor> {
     private GpioController controller;
-    private GpioPinAnalogOutput ena;
     private GpioPinDigitalOutput in1, in2, in3, in4;
+    private GpioPinPwmOutput ena;
     private Map<MotorSide, L298nMotor> motors;
 
     private final IPlatform platform;
@@ -38,9 +34,9 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
             controller = pi.getController();
             in1 = controller.provisionDigitalOutputPin(BCM.GPIO_03, "IN1");
             in2 = controller.provisionDigitalOutputPin(BCM.GPIO_05, "IN2");
-            in3 = controller.provisionDigitalOutputPin(BCM.GPIO_11, "IN3");
+            in3 = controller.provisionDigitalOutputPin(BCM.GPIO_07, "IN3");
             in4 = controller.provisionDigitalOutputPin(BCM.GPIO_13, "IN4");
-            ena = controller.provisionAnalogOutputPin(BCM.GPIO_07, "ENA");
+            ena = controller.provisionPwmOutputPin(BCM.GPIO_12, "ENA");
 
             in1.setShutdownOptions(true, PinState.LOW);
             in2.setShutdownOptions(true, PinState.LOW);
@@ -56,6 +52,8 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
             in2.low();
             in3.low();
             in4.low();
+
+            ena.setPwmRange(1000);
         } else {
             throw new IllegalStateException("Platform is not a PiPlatform!");
         }
@@ -78,11 +76,40 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
 
     @Override
     public void speed(double speed) {
-        ena.setValue(speed);
+    }
+
+    @Override
+    public void startForward() {
+        ena.setPwm(500);
+        IMotorController.super.startForward();
+    }
+
+    @Override
+    public void startLeft() {
+        ena.setPwm(500);
+        IMotorController.super.startLeft();
+    }
+
+    @Override
+    public void startBackward() {
+        ena.setPwm(700);
+        IMotorController.super.startBackward();
+    }
+
+    @Override
+    public void startRight() {
+        ena.setPwm(100);
+        IMotorController.super.startRight();
+    }
+
+    @Override
+    public void stop() {
+        ena.setPwm(0);
+        IMotorController.super.stop();
     }
 
     @Override
     public double getSpeed() {
-        return ena.getValue();
+        return ena.getPwm();
     }
 }

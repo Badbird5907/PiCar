@@ -1,7 +1,7 @@
-package dev.badbird.picar.system;
+package dev.badbird.picar.platform;
 
-import dev.badbird.picar.system.impl.NoOpPlatform;
-import dev.badbird.picar.system.impl.pi.PiPlatform;
+import dev.badbird.picar.platform.impl.NoOpPlatform;
+import dev.badbird.picar.platform.impl.pi.PiPlatform;
 
 public class Platform {
 

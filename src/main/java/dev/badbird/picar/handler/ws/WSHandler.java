@@ -2,6 +2,7 @@ package dev.badbird.picar.handler.ws;
 
 import com.google.gson.JsonObject;
 import dev.badbird.picar.PiCar;
+import dev.badbird.picar.platform.Platform;
 import dev.badbird.picar.ws.WSPacketRegistry;
 import io.javalin.websocket.WsConfig;
 import io.javalin.websocket.WsContext;
@@ -27,10 +28,14 @@ public class WSHandler implements Consumer<WsConfig> {
         wsConfig.onClose(ctx -> {
             log.info("WS Closed");
             connections.remove(ctx);
+            // stop motors just in case
+            Platform.getPlatform().getMotorController().stop();
         });
         wsConfig.onError(ctx -> {
             log.error("WS Error", ctx.error());
             connections.remove(ctx);
+            // stop motors just in case
+            Platform.getPlatform().getMotorController().stop();
         });
         wsConfig.onMessage(ctx -> {
             log.info("WS Message: {}", ctx.message());

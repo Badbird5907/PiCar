@@ -2,7 +2,7 @@ package dev.badbird.picar.motor;
 
 import dev.badbird.picar.object.MotorMovementState;
 import dev.badbird.picar.object.MovementDirection;
-import dev.badbird.picar.system.IPlatform;
+import dev.badbird.picar.platform.IPlatform;
 
 import java.util.HashMap;
 import java.util.List;

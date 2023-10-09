@@ -2,7 +2,7 @@ package dev.badbird.picar.ws.serverbound;
 
 import com.google.gson.JsonObject;
 import dev.badbird.picar.motor.IMotorController;
-import dev.badbird.picar.system.Platform;
+import dev.badbird.picar.platform.Platform;
 import dev.badbird.picar.ws.PacketDirection;
 import dev.badbird.picar.ws.WSPacket;
 import dev.badbird.picar.ws.WebSocketPacket;

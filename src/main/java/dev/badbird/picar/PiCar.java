@@ -7,7 +7,7 @@ import dev.badbird.picar.handler.ws.WSHandler;
 import dev.badbird.picar.handler.ws.StreamWSHandler;
 import dev.badbird.picar.object.Configuration;
 import dev.badbird.picar.object.HeartbeatThread;
-import dev.badbird.picar.system.Platform;
+import dev.badbird.picar.platform.Platform;
 import dev.badbird.picar.ws.WSPacketRegistry;
 import io.javalin.Javalin;
 import io.javalin.http.Handler;
