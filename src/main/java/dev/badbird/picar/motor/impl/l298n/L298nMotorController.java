@@ -1,6 +1,9 @@
 package dev.badbird.picar.motor.impl.l298n;
 
-import com.pi4j.io.gpio.*;
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.GpioPinPwmOutput;
+import com.pi4j.io.gpio.PinState;
 import dev.badbird.picar.motor.IMotorController;
 import dev.badbird.picar.motor.MotorSide;
 import dev.badbird.picar.platform.IPlatform;
@@ -8,14 +11,17 @@ import dev.badbird.picar.platform.impl.pi.BCM;
 import dev.badbird.picar.platform.impl.pi.PiPlatform;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Getter
 @RequiredArgsConstructor
 public class L298nMotorController implements IMotorController<L298nMotor> {
+    private static final int speedBoundMin = 250, speedBoundMax = 600;
     private GpioController controller;
     private GpioPinDigitalOutput in1, in2, in3, in4;
     private GpioPinPwmOutput ena;
@@ -52,17 +58,23 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
             in2.low();
             in3.low();
             in4.low();
-
-            ena.setPwmRange(1000);
         } else {
             throw new IllegalStateException("Platform is not a PiPlatform!");
         }
+
+        log.info("[DEBUG] 100: {}", calculateSpeed(100));
+        log.info("[DEBUG] 75: {}", calculateSpeed(75));
+        log.info("[DEBUG] 50: {}", calculateSpeed(50));
+        log.info("[DEBUG] 25: {}", calculateSpeed(25));
+        log.info("[DEBUG] 1: {}", calculateSpeed(1));
+        log.info("[DEBUG] 0: {}", calculateSpeed(0));
     }
 
     @Override
     public void cleanup() {
 
     }
+
     @Override
     public int getMotorCount() {
         return motors.size();
@@ -74,42 +86,50 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
         return Optional.ofNullable(l298nMotor);
     }
 
+    private int calculateSpeed(int percentage) {
+        if (percentage <= 0) {
+            return 0;
+        }
+        int diff = speedBoundMax - speedBoundMin;
+        return (int) (speedBoundMin + (diff * (percentage / 100.0)));
+    }
+
     @Override
-    public void speed(double speed) {
+    public void speed(int speed) {
+        int i = calculateSpeed(speed);
+        log.info("Setting speed to {} ({}%)", i, speed);
+        ena.setPwm(i);
+    }
+
+    @Override
+    public int getSpeed() {
+        int pwm = ena.getPwm();
+        log.info("Current speed is {}", pwm);
+        return (int) ((pwm - speedBoundMin) / (speedBoundMax - speedBoundMin) * 100);
     }
 
     @Override
     public void startForward() {
-        ena.setPwm(500);
         IMotorController.super.startForward();
     }
 
     @Override
     public void startLeft() {
-        ena.setPwm(500);
         IMotorController.super.startLeft();
     }
 
     @Override
     public void startBackward() {
-        ena.setPwm(700);
         IMotorController.super.startBackward();
     }
 
     @Override
     public void startRight() {
-        ena.setPwm(100);
         IMotorController.super.startRight();
     }
 
     @Override
     public void stop() {
-        ena.setPwm(0);
         IMotorController.super.stop();
-    }
-
-    @Override
-    public double getSpeed() {
-        return ena.getPwm();
     }
 }

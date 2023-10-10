@@ -16,4 +16,5 @@ public class ClientboundHeartbeatWSPacket implements WebSocketPacket {
     private long time = System.currentTimeMillis();
     private Map<MotorSide, MotorMovementState> motors;
     private MovementDirection movementDirection;
+    private int speed;
 }

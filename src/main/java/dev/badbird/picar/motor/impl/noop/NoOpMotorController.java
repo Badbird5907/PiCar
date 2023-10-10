@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class NoOpMotorController implements IMotorController<NoOpMotor> {
-    private double speed = 200;
+    private int speed = 200;
     @Getter
     private Map<MotorSide, NoOpMotor> motors;
     private final IPlatform platform;
@@ -46,13 +46,13 @@ public class NoOpMotorController implements IMotorController<NoOpMotor> {
 
 
     @Override
-    public void speed(double speed) {
+    public void speed(int speed) {
         System.out.println("Speed set to " + speed);
         this.speed = speed;
     }
 
     @Override
-    public double getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 }

@@ -52,16 +52,16 @@ public interface IMotorController<T extends IMotor> {
         getHalf(MotorSide.Half.RIGHT).forEach(IMotor::backward);
     }
 
-    void speed(double speed);
+    void speed(int speed);
 
-    double getSpeed();
+    int getSpeed();
 
-    default double speed() {
+    default int speed() {
         return getSpeed();
     }
 
-    default void setSpeed(double speed) {
-        speed(getSpeed());
+    default void setSpeed(int speed) {
+        speed(speed);
     }
 
     default Map<MotorSide, MotorMovementState> getMovementStates() {

@@ -3,6 +3,7 @@ package dev.badbird.picar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.badbird.picar.handler.*;
+import dev.badbird.picar.handler.motor.SpeedHandler;
 import dev.badbird.picar.handler.ws.WSHandler;
 import dev.badbird.picar.handler.ws.StreamWSHandler;
 import dev.badbird.picar.object.Configuration;
@@ -65,7 +66,8 @@ public class PiCar {
             });
         }).start(configuration.getPort());
         Handler[] routes = {
-                new FrontendHandler()
+                new FrontendHandler(),
+                new SpeedHandler()
         };
         app.ws("/api/ws/stream", new StreamWSHandler(executor));
         packetRegistry = new WSPacketRegistry(executor);

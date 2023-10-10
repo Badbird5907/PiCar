@@ -3,6 +3,7 @@ import {info} from "@/util/log";
 import {getSettingValue} from "@/util/setting.ts";
 
 const init = () => {
+    info("Initializing main WebSocket connection");
     const wsUrl = getSettingValue("websocketUrl");
     const ws = window.ws = new ReconnectingWebSocket(wsUrl);
     ws.addEventListener("open", () => {

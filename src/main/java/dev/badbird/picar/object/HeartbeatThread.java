@@ -19,7 +19,8 @@ public class HeartbeatThread extends Thread {
             ClientboundHeartbeatWSPacket packet = new ClientboundHeartbeatWSPacket(
                     System.currentTimeMillis(),
                     mc.getMovementStates(),
-                    mc.getDirection()
+                    mc.getDirection(),
+                    mc.getSpeed()
             );
             packet.send();
         }

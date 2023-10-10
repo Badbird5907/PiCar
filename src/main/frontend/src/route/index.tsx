@@ -14,6 +14,7 @@ function Index() {
     useEffect(() => {
         setWs(WebsocketHandler.init());
         return () => {
+            console.log("closing ws")
             WebsocketHandler.close();
         }
     }, []);

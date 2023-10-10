@@ -1,5 +1,5 @@
 import ReconnectingWebSocket from "reconnecting-websocket";
-import {Card, CardBody, Skeleton} from "@nextui-org/react";
+import {Card, CardBody, Input, Skeleton} from "@nextui-org/react";
 import {ReactElement, useEffect, useRef, useState} from "react";
 import {MotorSide} from "@/types/motor/motor-side.ts";
 import {MotorState} from "@/types/motor/state.ts";
@@ -8,6 +8,8 @@ import {MovementDirection, MovementState} from "@/types/motor/movement-state.ts"
 import MotorControl from "@/components/motor/motor-control.tsx";
 import {FaArrowDown, FaArrowLeft, FaArrowRight, FaArrowUp} from "react-icons/fa";
 import {FaCircleXmark} from "react-icons/fa6";
+import apiClient from "@/util/api-client.ts";
+import CustomButton from "@/components/button.tsx";
 
 type MotorStatusProps = {
     ws: ReconnectingWebSocket | null;
@@ -17,9 +19,15 @@ const MotorStatus = (props: MotorStatusProps) => {
     const [icon, setIcon] = useState<ReactElement>(<FaCircleXmark />);
     const [_movementDirection, _setMovementDirection] = useState<number>(MovementDirection.STOPPED);
     const directionRef = useRef(_movementDirection);
+    const [_speed, _setSpeed] = useState<number>(0);
+    const speedRef = useRef(_speed);
     const setMovementDirection = (data: number) => {
         directionRef.current = data;
         _setMovementDirection(data);
+    }
+    const setSpeed = (data: number) => {
+        speedRef.current = data;
+        _setSpeed(data);
     }
     const getIcon = () => {
         const movementDirection = directionRef.current;
@@ -70,23 +78,40 @@ const MotorStatus = (props: MotorStatusProps) => {
             <MotorControl ws={props.ws} />
             <Card>
                 <CardBody>
-                    {motorStates ?
-                        <div className={"flex flex-row gap-4 justify-center"}>
-                            {/*motorStates.map((motorState: MotorState) => {
+                    {motorStates && motorStates.length > 0 ?
+                        <div className={"flex flex-col"}>
+                            <div className={"flex flex-row gap-4 justify-center"}>
+                                {/*motorStates.map((motorState: MotorState) => {
                                 return <Motor state={motorState}/>
                             })*/
-                                // get half of the array
-                                motorStates.slice(0, Math.ceil(motorStates.length / 2)).map((motorState: MotorState) => {
-                                    return <Motor state={motorState}/>
-                                })
-                            }
-                            <div className={"flex flex-col justify-center"}>
-                                {icon}
+                                    // get half of the array
+                                    motorStates.slice(0, Math.ceil(motorStates.length / 2)).map((motorState: MotorState, i) => {
+                                        return <Motor state={motorState} key={i}/>
+                                    })
+                                }
+                                <div className={"flex flex-col justify-center"}>
+                                    {icon}
+                                </div>
+                                {motorStates.slice(Math.ceil(motorStates.length / 2)).map((motorState: MotorState, i) => {
+                                    return <Motor state={motorState} key={i}/>
+                                })}
                             </div>
-                            {motorStates.slice(Math.ceil(motorStates.length / 2)).map((motorState: MotorState) => {
-                                return <Motor state={motorState}/>
-                            })}
-                        </div> :
+                            {/* Speed Control */}
+                            <Input type={"number"} className={"my-4"} label={"Speed"} defaultValue={_speed + ""} onChange={() => {
+                                const speed = parseInt((document.getElementById("speed") as HTMLInputElement).value);
+                                setSpeed(speed);
+                            }}/>
+                            <CustomButton onClickLoading={() => {
+                                const speed = parseInt((document.getElementById("speed") as HTMLInputElement).value);
+                                return apiClient.post("/api/motor/speed", {
+                                    speed
+                                }).then((res) => {
+                                    console.log(res);
+                                });
+                            }}>
+                                Set Speed
+                            </CustomButton>
+                        </div>:
                         <>
                             <Skeleton className="rounded-lg">
                                 <div className="h-24 rounded-lg bg-default-300"></div>

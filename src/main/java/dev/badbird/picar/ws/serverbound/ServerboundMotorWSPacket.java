@@ -42,7 +42,7 @@ public class ServerboundMotorWSPacket implements WebSocketPacket {
         }
         IMotorController<?> mc = Platform.getPlatform().getMotorController();
         new ClientboundHeartbeatWSPacket(System.currentTimeMillis(), mc.getMovementStates(),
-                mc.getDirection()
+                mc.getDirection(), mc.getSpeed()
         ).send();
 
     }
