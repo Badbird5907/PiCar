@@ -1,12 +1,13 @@
 export enum MovementState {
-    FORWARD,
-    BACKWARD,
-    STOPPED
+    FORWARD = "FORWARD",
+    BACKWARD = "BACKWARD",
+    STOPPED = "STOPPED"
 }
+
 export enum MovementDirection {
-    FORWARD,
-    BACKWARD,
-    LEFT,
-    RIGHT,
-    STOPPED
+    FORWARD = "FORWARD",
+    BACKWARD = "BACKWARD",
+    LEFT = "LEFT",
+    RIGHT = "RIGHT",
+    STOPPED = "STOPPED"
 }

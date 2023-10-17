@@ -28,13 +28,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 return apiClient.get(path).then(res => res.data);
             }
         }}>
-            <body className={"min-h-screen bg-background font-sans antialiased"}>
+            <div className={"body-div min-h-screen bg-background font-sans antialiased"}>
             <main className="dark text-foreground bg-background h-full pt-4">
                 <DynamicModalProvider>
                     <RouterProvider router={router}/>
                 </DynamicModalProvider>
             </main>
-            </body>
+            </div>
         </SWRConfig>
     </NextUIProvider>
     // </React.StrictMode>,

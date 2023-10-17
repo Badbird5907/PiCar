@@ -1,6 +1,6 @@
 package dev.badbird.picar.motor;
 
-import dev.badbird.picar.object.MotorMovementState;
+import dev.badbird.picar.object.MotorState;
 import dev.badbird.picar.object.MovementDirection;
 import dev.badbird.picar.platform.IPlatform;
 
@@ -52,21 +52,18 @@ public interface IMotorController<T extends IMotor> {
         getHalf(MotorSide.Half.RIGHT).forEach(IMotor::backward);
     }
 
-    void speed(int speed);
-
-    int getSpeed();
-
-    default int speed() {
-        return getSpeed();
-    }
-
     default void setSpeed(int speed) {
-        speed(speed);
+        getMotors().values().forEach(motor -> motor.setSpeed(speed));
     }
 
-    default Map<MotorSide, MotorMovementState> getMovementStates() {
-        Map<MotorSide, MotorMovementState> map = new HashMap<>();
-        getMotors().forEach((side, motor) -> map.put(side, motor.getState().getMovementState()));
+    default void setSpeed(MotorSide side, int speed) {
+        getMotor(side).ifPresent(motor -> motor.setSpeed(speed));
+    }
+
+
+    default Map<MotorSide, MotorState> getMotorStates() {
+        Map<MotorSide, MotorState> map = new HashMap<>();
+        getMotors().forEach((side, motor) -> map.put(side, motor.getState()));
         return map;
     }
 

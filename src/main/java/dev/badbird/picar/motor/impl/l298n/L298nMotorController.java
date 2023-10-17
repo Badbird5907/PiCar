@@ -1,9 +1,6 @@
 package dev.badbird.picar.motor.impl.l298n;
 
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioPinDigitalOutput;
-import com.pi4j.io.gpio.GpioPinPwmOutput;
-import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.*;
 import dev.badbird.picar.motor.IMotorController;
 import dev.badbird.picar.motor.MotorSide;
 import dev.badbird.picar.platform.IPlatform;
@@ -24,7 +21,7 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
     private static final int speedBoundMin = 250, speedBoundMax = 600;
     private GpioController controller;
     private GpioPinDigitalOutput in1, in2, in3, in4;
-    private GpioPinPwmOutput ena;
+    private GpioPinPwmOutput ena, enb;
     private Map<MotorSide, L298nMotor> motors;
 
     private final IPlatform platform;
@@ -38,11 +35,13 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
     public void init() {
         if (platform instanceof PiPlatform pi) {
             controller = pi.getController();
-            in1 = controller.provisionDigitalOutputPin(BCM.GPIO_03, "IN1");
-            in2 = controller.provisionDigitalOutputPin(BCM.GPIO_05, "IN2");
-            in3 = controller.provisionDigitalOutputPin(BCM.GPIO_07, "IN3");
-            in4 = controller.provisionDigitalOutputPin(BCM.GPIO_13, "IN4");
-            ena = controller.provisionPwmOutputPin(BCM.GPIO_12, "ENA");
+            in1 = controller.provisionDigitalOutputPin(BCM.GPIO_26, "IN1", PinState.LOW);
+            in2 = controller.provisionDigitalOutputPin(BCM.GPIO_13, "IN2", PinState.LOW);
+            in3 = controller.provisionDigitalOutputPin(BCM.GPIO_19, "IN3", PinState.LOW);
+            in4 = controller.provisionDigitalOutputPin(BCM.GPIO_06, "IN4", PinState.LOW);
+
+            ena = controller.provisionPwmOutputPin(RaspiPin.GPIO_01, "ENA", calculateSpeed(50));
+            enb = controller.provisionPwmOutputPin(RaspiPin.GPIO_26, "ENB", calculateSpeed(50));
 
             in1.setShutdownOptions(true, PinState.LOW);
             in2.setShutdownOptions(true, PinState.LOW);
@@ -50,8 +49,8 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
             in4.setShutdownOptions(true, PinState.LOW);
 
             motors = new HashMap<>();
-            motors.put(MotorSide.TOP_LEFT, new L298nMotor(in1, in2, MotorSide.TOP_LEFT));
-            motors.put(MotorSide.TOP_RIGHT, new L298nMotor(in3, in4, MotorSide.TOP_RIGHT));
+            motors.put(MotorSide.TOP_LEFT, new L298nMotor(in1, in2, ena, MotorSide.TOP_LEFT));
+            motors.put(MotorSide.TOP_RIGHT, new L298nMotor(in3, in4, enb, MotorSide.TOP_RIGHT));
 
             // initial state - turn off motors
             in1.low();
@@ -86,7 +85,7 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
         return Optional.ofNullable(l298nMotor);
     }
 
-    private int calculateSpeed(int percentage) {
+    protected static int calculateSpeed(int percentage) {
         if (percentage <= 0) {
             return 0;
         }
@@ -94,18 +93,9 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
         return (int) (speedBoundMin + (diff * (percentage / 100.0)));
     }
 
-    @Override
-    public void speed(int speed) {
-        int i = calculateSpeed(speed);
-        log.info("Setting speed to {} ({}%)", i, speed);
-        ena.setPwm(i);
-    }
-
-    @Override
-    public int getSpeed() {
-        int pwm = ena.getPwm();
-        log.info("Current speed is {}", pwm);
-        return (int) ((pwm - speedBoundMin) / (speedBoundMax - speedBoundMin) * 100);
+    protected static int pwmSpeedToPercentage(int pwm) {
+        int diff = speedBoundMax - speedBoundMin;
+        return (int) (((pwm - speedBoundMin) / (double) diff) * 100);
     }
 
     @Override

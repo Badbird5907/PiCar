@@ -7,4 +7,5 @@ import lombok.Data;
 public class MotorState {
     private final MotorSide side;
     private final MotorMovementState movementState;
+    private final int speed;
 }

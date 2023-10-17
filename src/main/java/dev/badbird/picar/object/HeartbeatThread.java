@@ -18,9 +18,8 @@ public class HeartbeatThread extends Thread {
             IMotorController<?> mc = Platform.getPlatform().getMotorController();
             ClientboundHeartbeatWSPacket packet = new ClientboundHeartbeatWSPacket(
                     System.currentTimeMillis(),
-                    mc.getMovementStates(),
-                    mc.getDirection(),
-                    mc.getSpeed()
+                    mc.getMotorStates(),
+                    mc.getDirection()
             );
             packet.send();
         }

@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class NoOpMotorController implements IMotorController<NoOpMotor> {
-    private int speed = 200;
     @Getter
     private Map<MotorSide, NoOpMotor> motors;
     private final IPlatform platform;
@@ -44,15 +43,4 @@ public class NoOpMotorController implements IMotorController<NoOpMotor> {
         return Optional.ofNullable(motors.get(side));
     }
 
-
-    @Override
-    public void speed(int speed) {
-        System.out.println("Speed set to " + speed);
-        this.speed = speed;
-    }
-
-    @Override
-    public int getSpeed() {
-        return speed;
-    }
 }

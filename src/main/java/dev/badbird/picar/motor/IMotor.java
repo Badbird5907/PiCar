@@ -9,6 +9,8 @@ public interface IMotor {
 
     void stop();
 
+    void setSpeed(int speed);
+
     MotorSide getSide();
 
     MotorState getState();

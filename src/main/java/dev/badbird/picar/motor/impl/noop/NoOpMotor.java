@@ -4,17 +4,17 @@ import dev.badbird.picar.motor.IMotor;
 import dev.badbird.picar.motor.MotorSide;
 import dev.badbird.picar.object.MotorMovementState;
 import dev.badbird.picar.object.MotorState;
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 
-@RequiredArgsConstructor
+@Data
 public class NoOpMotor implements IMotor {
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(NoOpMotor.class);
     @Getter
     private final MotorSide side;
     private MotorMovementState state = MotorMovementState.STOPPED;
+    private int speed = 100;
 
     @Override
     public void forward() {
@@ -38,7 +38,8 @@ public class NoOpMotor implements IMotor {
     public MotorState getState() {
         return new MotorState(
                 side,
-                state
+                state,
+                speed
         );
     }
 }

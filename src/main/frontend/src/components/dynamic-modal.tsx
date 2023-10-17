@@ -8,7 +8,7 @@ interface ModalContentProps {
     onClose?: () => void;
 }
 
-interface DynamicModalContextProps {
+export interface DynamicModalContextProps {
     showModal: (content: ModalContentProps) => void;
     closeModal: () => void;
 }

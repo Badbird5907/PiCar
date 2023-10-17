@@ -1,6 +1,7 @@
 package dev.badbird.picar.motor.impl.l298n;
 
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.GpioPinPwmOutput;
 import dev.badbird.picar.motor.IMotor;
 import dev.badbird.picar.motor.MotorSide;
 import dev.badbird.picar.object.MotorMovementState;
@@ -12,6 +13,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class L298nMotor implements IMotor {
     private GpioPinDigitalOutput pin1, pin2;
+    private GpioPinPwmOutput pwm;
     private MotorSide side;
 
     @Override
@@ -24,6 +26,11 @@ public class L298nMotor implements IMotor {
     public void stop() {
         pin1.low();
         pin2.low();
+    }
+
+    @Override
+    public void setSpeed(int speed) {
+        pwm.setPwm(L298nMotorController.calculateSpeed(speed));
     }
 
     @Override
@@ -41,7 +48,8 @@ public class L298nMotor implements IMotor {
             state = MotorMovementState.FORWARD;
         return new MotorState(
                 side,
-                state
+                state,
+                L298nMotorController.pwmSpeedToPercentage(pwm.getPwm())
         );
     }
 }
