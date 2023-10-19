@@ -43,6 +43,7 @@ const MotorStatus = (props: MotorStatusProps) => {
             const json = JSON.parse(e.data);
             if (json.name !== "heartbeat") return;
             const motors: any = json.data.motors;
+            console.log({ json })
             const movementDirection = json.data.movementDirection;
             setMovementDirection(movementDirection)
             const keys = Object.keys(motors);

@@ -35,13 +35,12 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
     public void init() {
         if (platform instanceof PiPlatform pi) {
             controller = pi.getController();
-            in1 = controller.provisionDigitalOutputPin(BCM.GPIO_26, "IN1", PinState.LOW);
-            in2 = controller.provisionDigitalOutputPin(BCM.GPIO_13, "IN2", PinState.LOW);
-            in3 = controller.provisionDigitalOutputPin(BCM.GPIO_19, "IN3", PinState.LOW);
-            in4 = controller.provisionDigitalOutputPin(BCM.GPIO_06, "IN4", PinState.LOW);
-
-            ena = controller.provisionPwmOutputPin(RaspiPin.GPIO_01, "ENA", calculateSpeed(50));
-            enb = controller.provisionPwmOutputPin(RaspiPin.GPIO_26, "ENB", calculateSpeed(50));
+            in1 = GpioFactory.getInstance().provisionDigitalOutputPin(RaspiPin.GPIO_25, "IN1", PinState.LOW);
+            in2 = GpioFactory.getInstance().provisionDigitalOutputPin(RaspiPin.GPIO_23, "IN2", PinState.LOW);
+            in3 = GpioFactory.getInstance().provisionDigitalOutputPin(RaspiPin.GPIO_24, "IN3", PinState.LOW);
+            in4 = GpioFactory.getInstance().provisionDigitalOutputPin(RaspiPin.GPIO_22, "IN4", PinState.LOW);
+            ena = GpioFactory.getInstance().provisionPwmOutputPin(RaspiPin.GPIO_01, "ENA",  L298nMotorController.calculateSpeed(50));
+            enb = GpioFactory.getInstance().provisionPwmOutputPin(RaspiPin.GPIO_26, "ENB",  L298nMotorController.calculateSpeed(50));
 
             in1.setShutdownOptions(true, PinState.LOW);
             in2.setShutdownOptions(true, PinState.LOW);
@@ -85,7 +84,7 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
         return Optional.ofNullable(l298nMotor);
     }
 
-    protected static int calculateSpeed(int percentage) {
+    public static int calculateSpeed(int percentage) {
         if (percentage <= 0) {
             return 0;
         }
@@ -93,33 +92,51 @@ public class L298nMotorController implements IMotorController<L298nMotor> {
         return (int) (speedBoundMin + (diff * (percentage / 100.0)));
     }
 
-    protected static int pwmSpeedToPercentage(int pwm) {
+    public static int pwmSpeedToPercentage(int pwm) {
         int diff = speedBoundMax - speedBoundMin;
         return (int) (((pwm - speedBoundMin) / (double) diff) * 100);
     }
-
+    /*
     @Override
     public void startForward() {
-        IMotorController.super.startForward();
+        // IMotorController.super.startForward();
+        in1.high();
+        in2.low();
+        in3.high();
+        in4.low();
     }
 
     @Override
     public void startLeft() {
-        IMotorController.super.startLeft();
+        in1.low();
+        in2.high();
+        in3.high();
+        in4.low();
     }
 
     @Override
     public void startBackward() {
-        IMotorController.super.startBackward();
+        // IMotorController.super.startBackward();
+        in1.low();
+        in2.high();
+        in3.low();
+        in4.high();
     }
 
     @Override
     public void startRight() {
-        IMotorController.super.startRight();
+        in1.high();
+        in2.low();
+        in3.low();
+        in4.high();
     }
 
     @Override
     public void stop() {
-        IMotorController.super.stop();
+        in1.low();
+        in2.low();
+        in3.low();
+        in4.low();
     }
+     */
 }
