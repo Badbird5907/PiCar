@@ -9,6 +9,7 @@ import {FaArrowDown, FaArrowLeft, FaArrowRight, FaArrowUp} from "react-icons/fa"
 import {FaCircleXmark} from "react-icons/fa6";
 import {useDynamicModal} from "@/components/dynamic-modal";
 import CustomButton from "@/components/button";
+import MobileControl from "@/components/motor/mobile-control";
 
 type MotorStatusProps = {
     ws: ReconnectingWebSocket | null;
@@ -88,6 +89,7 @@ const MotorStatus = (props: MotorStatusProps) => {
                             }}>
                                 Set Speed
                             </CustomButton>
+                            <MobileControl/>
                         </div> :
                         <>
                             <Skeleton className="rounded-lg">
